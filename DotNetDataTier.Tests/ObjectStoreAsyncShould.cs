@@ -54,7 +54,7 @@ namespace DotNetDataTier.Tests
         }
 
         [TestMethod]
-        public async Task ObjectsQueryWithPredicate()
+        public virtual async Task ObjectsQueryWithPredicate()
         {
             var result = this.Sut.ObjectsAsync.Where(t => t.Data == TestDataGenerator.DataStringOne);
 
@@ -63,7 +63,7 @@ namespace DotNetDataTier.Tests
         }
 
         [TestMethod]
-        public async Task ObjectsQueryWithoutPredicate()
+        public async virtual Task ObjectsQueryWithoutPredicate()
         {
             var result = this.Sut.ObjectsAsync;
 
@@ -72,7 +72,7 @@ namespace DotNetDataTier.Tests
         }
 
         [TestMethod]
-        public async Task DeleteAnAttachedItem()
+        public async virtual Task DeleteAnAttachedItem()
         {
             var id = this.RawData.First().Id;
             var deleteItem = await this.Sut.GetByIdAsync(id);
@@ -88,7 +88,7 @@ namespace DotNetDataTier.Tests
 
         [TestMethod]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Un", Justification = "Fuck CA!!!")]
-        public async Task DeleteAnUnAttachedItem()
+        public async virtual Task DeleteAnUnAttachedItem()
         {
             var id = this.RawData.First().Id;
             var deleteItem = new TestPersistable { Id = id };
