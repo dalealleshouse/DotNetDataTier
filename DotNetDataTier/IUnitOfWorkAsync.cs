@@ -1,14 +1,16 @@
 ﻿//  --------------------------------
-//  <copyright file="IUnitOfWork.cs">
+//  <copyright file="IUnitOfWorkAsync.cs">
 //      Copyright (c) 2014 All rights reserved.
 //  </copyright>
 //  <author>Alleshouse, Dale</author>
-//  <date>09/28/2014</date>
+//  <date>09/30/2014</date>
 //  ---------------------------------
 namespace DotNetDataTier
 {
-    public interface IUnitOfWork
+    using System.Threading.Tasks;
+
+    public interface IUnitOfWorkAsync
     {
-        void SaveChanges();
+        Task SaveChangesAsync();
     }
 }

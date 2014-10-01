@@ -9,7 +9,7 @@ namespace DotNetDataTier.EntityFramework
 {
     using System.Data.Entity;
 
-    public interface IDataContext : IUnitOfWork
+    public interface IDataContext : IUnitOfWork, IUnitOfWorkAsync
     {
         IDbSet<T> GetSet<T>() where T : class;
     }

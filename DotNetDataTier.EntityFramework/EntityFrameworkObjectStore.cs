@@ -8,11 +8,12 @@
 namespace DotNetDataTier.EntityFramework
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
-    public class EntityFrameworkObjectStore<T> : IObjectStore<T>
-        where T : class
+    public class EntityFrameworkObjectStore<TKey, TEntity> : IObjectStore<TKey, TEntity>
+        where TEntity : class, IPersistable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
         private readonly IDataContext _dataContext;
 
@@ -31,32 +32,32 @@ namespace DotNetDataTier.EntityFramework
             this.Dispose(false);
         }
 
-        public IQueryable<T> Objects
+        public IQueryable<TEntity> Objects
         {
             get
             {
-                return this._dataContext.GetSet<T>();
+                return this._dataContext.GetSet<TEntity>();
             }
         }
 
-        public int SaveChanges()
+        public void SaveChanges()
         {
-            return this._dataContext.SaveChanges();
+            this._dataContext.SaveChanges();
         }
 
-        public async Task<int> SaveChangesAsync()
+        public TEntity GetById(TKey id)
         {
-            return await this._dataContext.SaveChangesAsync();
+            return this._dataContext.GetSet<TEntity>().FirstOrDefault(t => EqualityComparer<TKey>.Default.Equals(t.Id, id));
         }
 
-        public T Add(T obj)
+        public TEntity Add(TEntity obj)
         {
-            return this._dataContext.GetSet<T>().Add(obj);
+            return this._dataContext.GetSet<TEntity>().Add(obj);
         }
 
-        public T Delete(T obj)
+        public void Delete(TEntity obj)
         {
-            return this._dataContext.GetSet<T>().Remove(obj);
+            this._dataContext.GetSet<TEntity>().Remove(obj);
         }
 
         public void Dispose()

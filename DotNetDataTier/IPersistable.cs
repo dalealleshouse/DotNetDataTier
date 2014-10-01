@@ -1,14 +1,17 @@
 ﻿//  --------------------------------
-//  <copyright file="IUnitOfWork.cs">
+//  <copyright file="IPersistable.cs">
 //      Copyright (c) 2014 All rights reserved.
 //  </copyright>
 //  <author>Alleshouse, Dale</author>
-//  <date>09/28/2014</date>
+//  <date>10/01/2014</date>
 //  ---------------------------------
 namespace DotNetDataTier
 {
-    public interface IUnitOfWork
+    using System;
+
+    public interface IPersistable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
-        void SaveChanges();
+        TKey Id { get; set; }
     }
 }

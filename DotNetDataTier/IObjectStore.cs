@@ -10,13 +10,16 @@ namespace DotNetDataTier
     using System;
     using System.Linq;
 
-    public interface IObjectStore<T> : IUnitOfWork, IDisposable
-        where T : class
+    public interface IObjectStore<TKey, TEntity> : IUnitOfWork, IDisposable
+        where TEntity : class, IPersistable<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
-        IQueryable<T> Objects { get; }
+        IQueryable<TEntity> Objects { get; }
 
-        T Add(T obj);
+        TEntity GetById(TKey id);
 
-        T Delete(T obj);
+        TEntity Add(TEntity obj);
+
+        void Delete(TEntity obj);
     }
 }
