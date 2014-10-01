@@ -9,13 +9,12 @@ namespace DotNetDataTier.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Raven.Client;
 
     [TestClass]
     public abstract class ObjectStoreAsyncShould : IDisposable
@@ -130,6 +129,7 @@ namespace DotNetDataTier.Tests
             var entity = new TestPersistable { Data = "Some Data" };
 
             var result = await this.Sut.AddAsync(entity);
+            await this.Sut.SaveChangesAsync();
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(Guid.Empty, result.Id);

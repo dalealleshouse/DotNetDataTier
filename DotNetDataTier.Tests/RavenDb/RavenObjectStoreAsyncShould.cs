@@ -5,13 +5,12 @@
 //  <author>Alleshouse, Dale</author>
 //  <date>10/01/2014</date>
 //  ---------------------------------
-namespace DotNetDataTier.Tests
+namespace DotNetDataTier.Tests.RavenDb
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
 
     using DotNetDataTier.RavenDb;
-    using DotNetDataTier.Tests.RavenDb;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -121,6 +121,7 @@ namespace DotNetDataTier.Tests
             var entity = new TestPersistable { Data = "Some Data" };
 
             var result = this.Sut.Add(entity);
+            this.Sut.SaveChanges();
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(Guid.Empty, result.Id);

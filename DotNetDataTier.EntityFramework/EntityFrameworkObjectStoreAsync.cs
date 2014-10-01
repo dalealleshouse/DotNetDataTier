@@ -8,7 +8,6 @@
 namespace DotNetDataTier.EntityFramework
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Threading.Tasks;
@@ -49,7 +48,7 @@ namespace DotNetDataTier.EntityFramework
 
         public Task<TEntity> GetByIdAsync(TKey id)
         {
-            return this._dataContext.GetSet<TEntity>().FirstOrDefaultAsync(t => EqualityComparer<TKey>.Default.Equals(t.Id, id));
+            return this._dataContext.GetSet<TEntity>().FirstOrDefaultAsync(t => t.Id.Equals(id));
         }
 
         public Task<TEntity> AddAsync(TEntity obj)
@@ -59,10 +58,19 @@ namespace DotNetDataTier.EntityFramework
 
         public async Task DeleteAsync(TEntity obj)
         {
-            this._dataContext.GetSet<TEntity>().Remove(obj);
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
 
-            // http://blog.cincura.net/233455-better-cached-completed-task/
-            await Task.Delay(0);
+            var deleteItem = await this.GetByIdAsync(obj.Id);
+
+            if (deleteItem == null)
+            {
+                throw new InvalidOperationException("The item does not exist");
+            }
+
+            this._dataContext.GetSet<TEntity>().Remove(deleteItem);
         }
 
         public void Dispose()

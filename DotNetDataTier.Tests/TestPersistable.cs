@@ -8,11 +8,15 @@
 namespace DotNetDataTier.Tests
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class TestPersistable : IPersistable<Guid>
     {
         public string Data { get; set; }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
     }
 }

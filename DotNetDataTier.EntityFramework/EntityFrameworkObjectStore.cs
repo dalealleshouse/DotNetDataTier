@@ -8,7 +8,6 @@
 namespace DotNetDataTier.EntityFramework
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class EntityFrameworkObjectStore<TKey, TEntity> : IObjectStore<TKey, TEntity>
@@ -47,7 +46,7 @@ namespace DotNetDataTier.EntityFramework
 
         public TEntity GetById(TKey id)
         {
-            return this._dataContext.GetSet<TEntity>().FirstOrDefault(t => EqualityComparer<TKey>.Default.Equals(t.Id, id));
+            return this._dataContext.GetSet<TEntity>().FirstOrDefault(t => t.Id.Equals(id));
         }
 
         public TEntity Add(TEntity obj)
@@ -57,7 +56,19 @@ namespace DotNetDataTier.EntityFramework
 
         public void Delete(TEntity obj)
         {
-            this._dataContext.GetSet<TEntity>().Remove(obj);
+            if (obj == null)
+            {
+                throw new ArgumentNullException("obj");
+            }
+
+            var deleteItem = this.GetById(obj.Id);
+
+            if (deleteItem == null)
+            {
+                throw new InvalidOperationException("The item does not exist");
+            }
+
+            this._dataContext.GetSet<TEntity>().Remove(deleteItem);
         }
 
         public void Dispose()
