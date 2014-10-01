@@ -1,0 +1,7 @@
+﻿1) If you try to use an Async method with the IObjectStore, it will throw an error
+ - System.NotSupportedException: Specified method is not supported.
+
+2) store = IObjectStore<>
+store.Objects.FirstOrDefault(t => t.Id == id);
+throws - System.InvalidOperationException: Attempt to query by id only is blocked, you should use call session.Load("TestPersistables/f704ad38-6f1a-4a73-bbdb-a583c8d4bd78"); instead of session.Query().Where(x=>x.Id == "TestPersistables/f704ad38-6f1a-4a73-bbdb-a583c8d4bd78");
+You can turn this error off by specifying documentStore.Conventions.AllowQueriesOnId = true;, but that is not recommend and provided for backward compatibility reasons only.
