@@ -72,15 +72,13 @@ namespace DotNetDataTier.Tests
         }
 
         [TestMethod]
-        public async virtual Task DeleteAnAttachedItem()
+        public async Task DeleteAnAttachedItem()
         {
             var id = this.RawData.First().Id;
             var deleteItem = await this.Sut.GetByIdAsync(id);
 
-            Assert.AreEqual(10, await this.Sut.ObjectsAsync.CountAsync());
             await this.Sut.DeleteAsync(deleteItem);
             await this.Sut.SaveChangesAsync();
-            Assert.AreEqual(9, await this.Sut.ObjectsAsync.CountAsync());
 
             var item = await this.Sut.GetByIdAsync(id);
             Assert.IsNull(item);
@@ -88,15 +86,13 @@ namespace DotNetDataTier.Tests
 
         [TestMethod]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Un", Justification = "Fuck CA!!!")]
-        public async virtual Task DeleteAnUnAttachedItem()
+        public async Task DeleteAnUnAttachedItem()
         {
             var id = this.RawData.First().Id;
             var deleteItem = new TestPersistable { Id = id };
 
-            Assert.AreEqual(10, await this.Sut.ObjectsAsync.CountAsync());
             await this.Sut.DeleteAsync(deleteItem);
             await this.Sut.SaveChangesAsync();
-            Assert.AreEqual(9, await this.Sut.ObjectsAsync.CountAsync());
 
             var item = await this.Sut.GetByIdAsync(id);
             Assert.IsNull(item);

@@ -22,7 +22,7 @@ namespace DotNetDataTier.Tests.RavenDb
     public class RavenObjectStoreAsyncShould : ObjectStoreAsyncShould
     {
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
-            Justification = "How the fuck am I supposed to this if I dispose it immediately?")]
+            Justification = "How the fuck am I supposed to use this if I dispose it immediately?")]
         [TestInitialize]
         public override void Init()
         {
@@ -53,36 +53,6 @@ namespace DotNetDataTier.Tests.RavenDb
 
             Assert.IsNotNull(result);
             Assert.AreEqual(10, await result.CountAsync());
-        }
-
-        [TestMethod]
-        public async override Task DeleteAnUnAttachedItem()
-        {
-            var id = this.RawData.First().Id;
-            var deleteItem = new TestPersistable { Id = id };
-
-            Assert.AreEqual(10, await this.Sut.ObjectsAsync.CountAsync());
-            await this.Sut.DeleteAsync(deleteItem);
-            await this.Sut.SaveChangesAsync();
-            Assert.AreEqual(9, await this.Sut.ObjectsAsync.CountAsync());
-
-            var item = await this.Sut.GetByIdAsync(id);
-            Assert.IsNull(item);
-        }
-
-        [TestMethod]
-        public async override Task DeleteAnAttachedItem()
-        {
-            var id = this.RawData.First().Id;
-            var deleteItem = await this.Sut.GetByIdAsync(id);
-
-            Assert.AreEqual(10, await this.Sut.ObjectsAsync.CountAsync());
-            await this.Sut.DeleteAsync(deleteItem);
-            await this.Sut.SaveChangesAsync();
-            Assert.AreEqual(9, await this.Sut.ObjectsAsync.CountAsync());
-
-            var item = await this.Sut.GetByIdAsync(id);
-            Assert.IsNull(item);
         }
     }
 }
